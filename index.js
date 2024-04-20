@@ -1,9 +1,13 @@
-import express from "express";
-import cors from "cors";
-import mongoose from "mongoose";
-
+var express = require('express')
+const mongoose = require('mongoose')
 const mongoString = "mongodb+srv://chintandaxeshpatel:ZNEwFL1cklpV49Wl@cluster0.r1ze08e.mongodb.net/players"
 const app = express();
+
+var bodyParser = require('body-parser')
+app.use( bodyParser.json() )       
+app.use(bodyParser.urlencoded({     
+  extended: true
+}))
 
 app.use(cors());
 app.use(express.json());
