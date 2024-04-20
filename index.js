@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded({
   extended: true
 }))
 
-app.get("/getres", async function(req, res) => {
+app.get("/getres", async function(req, res) {
     const allData = await Data.find({});
     console.log("All data:", allData);
     const data = {data:allData}
