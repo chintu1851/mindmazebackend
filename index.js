@@ -1,6 +1,10 @@
-
 const express = require('express');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+
+const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Mongoose connection options (handle deprecation warnings)
 const connectionOptions = {
@@ -23,35 +27,15 @@ const dataSchema = new mongoose.Schema({
 
 const Data = mongoose.model("Datas", dataSchema);
 
-const app = express();
-const bodyParser = require('body-parser');
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
 // GET /getres: Fetch all data
 app.get("/getres", async (req, res) => {
- console.log("reqqqq--->", req);
- console.log("ressss--->", res);
  try {
   const allData = await Data.find({}).lean();
   console.log("All data:", allData);
   res.json({ data: allData });
-  console.log("ressss 111 --->", res);
  } catch (error) {
   console.error(error);
   res.status(500).json({ message: "Error fetching data" });
- }
-});
-
-// POST /postdata: Create new data
-app.post("/postdata", async (req, res) => {
- try {
-  const newData = req.body;
-  const createdData = await Data.create(newData);
-  res.json({ createdData });
- } catch (error) {
-  console.error(error);
-  res.status(400).json({ message: "Error creating data" }); // Specific error message
  }
 });
 
