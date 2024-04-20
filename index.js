@@ -1,6 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors'); // Import cors middleware
 
 // Mongoose connection options (handle deprecation warnings)
 const connectionOptions = {
@@ -27,9 +26,6 @@ const app = express();
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-// Enable CORS for all routes
-app.use(cors());
 
 // GET /getres: Fetch all data
 app.get("/getres", async (req, res) => {
