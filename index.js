@@ -1,17 +1,20 @@
-const express = require('express')
-const mongoose = require('mongoose')
+const express = require('express');
+const mongoose = require('mongoose');
 
-mongoose.connect("mongodb+srv://chintandaxeshpatel:ZNEwFL1cklpV49Wl@cluster0.r1ze08e.mongodb.net/players");
-const db = mongoose.connection
+// Mongoose connection options (handle deprecation warnings)
+const connectionOptions = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+};
 
-db.on('error', (error) => {
-   console.log(error)
-})
+// Connect to MongoDB database
+mongoose.connect("mongodb+srv://chintandaxeshpatel:ZNEwFL1cklpV49Wl@cluster0.r1ze08e.mongodb.net/players", connectionOptions)
+  .then(() => console.log('Database Connected'))
+  .catch(error => console.error(error));
 
-db.once('connected', () => {
-   console.log('Database Connected')
-})
+const db = mongoose.connection;
 
+// Define Data Schema
 const dataSchema = new mongoose.Schema({
   name: String,
   score: Number,
@@ -19,24 +22,33 @@ const dataSchema = new mongoose.Schema({
 
 const Data = mongoose.model("Datas", dataSchema);
 
-var app = express()
-var bodyParser = require('body-parser')
-app.use( bodyParser.json() )       
-app.use(bodyParser.urlencoded({     
-  extended: true
-}))
+const app = express();
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get("/getres", async function(req, res) {
+// GET /getres: Fetch all data
+app.get("/getres", async (req, res) => {
+  try {
     const allData = await Data.find({});
     console.log("All data:", allData);
-    const data = {data:allData}
-    res.json(data);
+    res.json({ data: allData });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error fetching data" });
+  }
 });
 
+// POST /postdata: Create new data
 app.post("/postdata", async (req, res) => {
-  const newData = req.body;
+  try {
+    const newData = req.body;
     const createdData = await Data.create(newData);
     res.json({ createdData });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ message: "Error creating data" });  // Specific error message
+  }
 });
 
 const PORT = process.env.PORT || 3030;
