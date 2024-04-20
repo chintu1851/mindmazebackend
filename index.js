@@ -13,7 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 mongoose.connect(mongoString);
-db = mangoose.connection
+const db = mangoose.connection
 
 db.once('connected', () => {
    console.log('Database Connected')
