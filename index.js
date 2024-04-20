@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
+import mongoose from "mongoose";
 
-const mongoose = require('mongoose')
 const mongoString = "mongodb+srv://chintandaxeshpatel:ZNEwFL1cklpV49Wl@cluster0.r1ze08e.mongodb.net/players"
 const app = express();
 
