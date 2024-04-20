@@ -29,10 +29,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // GET /getres: Fetch all data
 app.get("/getres", async (req, res) => {
+  console.log("reqqqq--->", req);
+  console.log("ressss--->", res);
   try {
     const allData = await Data.find({});
     console.log("All data:", allData);
     res.json({ data: allData });
+    console.log("ressss 111 --->", res);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error fetching data" });
