@@ -33,7 +33,7 @@ app.get("/getres", async (req, res) => {
  console.log("reqqqq--->", req);
  console.log("ressss--->", res);
  try {
-  const allData = await Data.find({});
+  const allData = await Data.find({}).lean();
   console.log("All data:", allData);
   res.json({ data: allData });
   console.log("ressss 111 --->", res);
