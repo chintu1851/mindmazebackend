@@ -41,7 +41,7 @@ app.post("/postdata", async (req, res) => {
   }
 });
 
-const PORT = 8080;
+const PORT = process.env.PORT || 3030;
 app.listen(PORT, () => {
   console.log(`Backend server is running on port ${PORT}`);
 });
