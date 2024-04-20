@@ -1,4 +1,4 @@
-var express = require('express')
+const express = require('express')
 const mongoose = require('mongoose')
 
 mongoose.connect("mongodb+srv://chintandaxeshpatel:ZNEwFL1cklpV49Wl@cluster0.r1ze08e.mongodb.net/players");
