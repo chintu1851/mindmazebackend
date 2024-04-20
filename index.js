@@ -1,6 +1,6 @@
 var express = require('express')
 const mongoose = require('mongoose')
-const mongoString = "mongodb+srv://chintandaxeshpatel:ZNEwFL1cklpV49Wl@cluster0.r1ze08e.mongodb.net/players"
+const mongoString = "mongodb+srv://chintandaxeshpatel:Qwert1851@cluster0.r1ze08e.mongodb.net/players"
 const app = express();
 
 var bodyParser = require('body-parser')
