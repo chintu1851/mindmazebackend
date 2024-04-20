@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({
 
 
 mongoose.connect(mongoString);
-const db = mangoose.connection
+const db = mongoose.connection
 
 db.once('connected', () => {
    console.log('Database Connected')
