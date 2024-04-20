@@ -1,17 +1,13 @@
 var express = require('express')
 const mongoose = require('mongoose')
-// const mongoString = "mongodb+srv://chintandaxeshpatel:Qwert1851@cluster0.r1ze08e.mongodb.net/players"
-const app = express();
+const mongoString = "mongodb+srv://chintandaxeshpatel:Qwert1851@cluster0.r1ze08e.mongodb.net/players"
 
-var bodyParser = require('body-parser')
-app.use( bodyParser.json() )       
-app.use(bodyParser.urlencoded({     
-  extended: true
-}))
-
-
-mongoose.connect("mongodb+srv://chintandaxeshpatel:Qwert1851@cluster0.r1ze08e.mongodb.net/players");
+mongoose.connect(mongoString);
 const db = mongoose.connection
+
+db.on('error', (error) => {
+   console.log(error)
+})
 
 db.once('connected', () => {
    console.log('Database Connected')
@@ -24,8 +20,15 @@ const dataSchema = new mongoose.Schema({
 
 const Data = mongoose.model("Data", dataSchema);
 
-app.get("/getres", async (req, res) => {
-    const allData = await Data.find({}).lean();
+var app = express()
+var bodyParser = require('body-parser')
+app.use( bodyParser.json() )       
+app.use(bodyParser.urlencoded({     
+  extended: true
+}))
+
+app.get("/getres", async function(req, res) => {
+    const allData = await Data.find({});
     console.log("All data:", allData);
     const data = {data:allData}
     res.json(data);
