@@ -1,56 +1,60 @@
-//mongoose.connect("mongodb+srv://chintandaxeshpatel:Qwert1851@cluster0.jexi3zu.mongodb.net/FormData");
+const express = require('express');
+const mongoose = require('mongoose');
 
-import express from "express";
-import cors from "cors";
-import mongoose from "mongoose";
+// Mongoose connection options (handle deprecation warnings)
+const connectionOptions = {
+ useNewUrlParser: true,
+ useUnifiedTopology: true
+};
+
+// Connect to MongoDB database
+mongoose.connect("mongodb+srv://chintandaxeshpatel:ZNEwFL1cklpV49Wl@cluster0.r1ze08e.mongodb.net/players", connectionOptions)
+ .then(() => console.log('Database Connected'))
+ .catch(error => console.error(error));
+
+const db = mongoose.connection;
+
+// Define Data Schema
+const dataSchema = new mongoose.Schema({
+ name: String,
+ score: Number,
+});
+
+const Data = mongoose.model("Datas", dataSchema);
 
 const app = express();
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(cors());
-app.use(express.json());
-
-mongoose.connect("mongodb+srv://chintandaxeshpatel:ZNEwFL1cklpV49Wl@cluster0.r1ze08e.mongodb.net/players");
-const dataSchema = new mongoose.Schema({
-  name: String,
-  score: Number,
-});
-
-const Data = mongoose.model("Data", dataSchema);
-
-app.get("/", (req, res) => res.send("Express on Vercel"));
-
-
+// GET /getres: Fetch all data
 app.get("/getres", async (req, res) => {
-  
-  console.log("insideeeee getres");
-  if (!mongoose.connection.readyState) {
-    console.log("Database connection error");
-    return res.status(500).json({ error: "Database connection not established" });
-  }
-  
-  try {
-    const allData = await Data.find({}).lean();
-    console.log("All data:", allData);
-    res.json({ data: allData });
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    res.status(500).json({ error: "Error fetching data" });
-  }
+ console.log("reqqqq--->", req);
+ console.log("ressss--->", res);
+ try {
+  const allData = await Data.find({}).lean();
+  console.log("All data:", allData);
+  res.json({ data: allData });
+  console.log("ressss 111 --->", res);
+ } catch (error) {
+  console.error(error);
+  res.status(500).json({ message: "Error fetching data" });
+ }
 });
 
+// POST /postdata: Create new data
 app.post("/postdata", async (req, res) => {
+ try {
   const newData = req.body;
-
-  try {
-    const createdData = await Data.create(newData);
-    res.json({ createdData });
-  } catch (error) {
-    console.error("Error adding data:", error);
-    res.status(500).json({ error: "Error adding data" });
-  }
+  const createdData = await Data.create(newData);
+  res.json({ createdData });
+ } catch (error) {
+  console.error(error);
+  res.status(400).json({ message: "Error creating data" }); // Specific error message
+ }
 });
 
-const PORT = 8080;
+const PORT = process.env.PORT || 3030;
 app.listen(PORT, () => {
-  console.log(`Backend server is running on port ${PORT}`);
+ console.log(`Backend server is running on port ${PORT}`);
 });
