@@ -19,9 +19,10 @@ const Data = mongoose.model("Data", dataSchema);
 
 app.get("/getres", async (req, res) => {
   try {
-    const allData = await Data.find({}).lean();
+    const allData = await Data.find({});
     console.log("All data:", allData);
-    res.json({ data: allData });
+    const data = {data:allData}
+    res.json(data);
   } catch (error) {
     console.error("Error fetching data:", error);
     res.status(500).json({ error: "Error fetching data" });
