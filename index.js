@@ -19,7 +19,7 @@ const Data = mongoose.model("Data", dataSchema);
 
 app.get("/getres", async (req, res) => {
   try {
-    const allData = await Data.find({});
+    const allData = await Data.find({}).lean();
     console.log("All data:", allData);
     const data = {data:allData}
     res.json(data);
