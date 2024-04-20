@@ -1,6 +1,5 @@
 var express = require('express')
 const mongoose = require('mongoose')
-// const mongoString = "mongodb+srv://chintandaxeshpatel:ZNEwFL1cklpV49Wl@cluster0.r1ze08e.mongodb.net/players"
 
 mongoose.connect("mongodb+srv://chintandaxeshpatel:ZNEwFL1cklpV49Wl@cluster0.r1ze08e.mongodb.net/players");
 const db = mongoose.connection
@@ -18,7 +17,7 @@ const dataSchema = new mongoose.Schema({
   score: Number,
 });
 
-const Data = mongoose.model("Data", dataSchema);
+const Data = mongoose.model("datas", dataSchema);
 
 var app = express()
 var bodyParser = require('body-parser')
