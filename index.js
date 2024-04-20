@@ -17,7 +17,7 @@ const dataSchema = new mongoose.Schema({
   score: Number,
 });
 
-const Data = mongoose.model("datas", dataSchema);
+const Data = mongoose.model("Datas", dataSchema);
 
 var app = express()
 var bodyParser = require('body-parser')
