@@ -1,25 +1,15 @@
-// index.cjs
+//mongoose.connect("mongodb+srv://chintandaxeshpatel:Qwert1851@cluster0.jexi3zu.mongodb.net/FormData");
 
-var express = require('express')
-const mongoose = require('mongoose')
-const cors = require('cors');
-const bodyParser = require('body-parser');
+import express from "express";
+import cors from "cors";
+import mongoose from "mongoose";
 
-const mongoString = "mongodb+srv://chintandaxeshpatel:ZNEwFL1cklpV49Wl@cluster0.r1ze08e.mongodb.net/players"
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
-mongoose.connect(mongoString);
-const db = mongoose.connection
-
-db.once('connected', () => {
-   console.log('Database Connected')
-})
-
+mongoose.connect("mongodb+srv://chintandaxeshpatel:ZNEwFL1cklpV49Wl@cluster0.r1ze08e.mongodb.net/players");
 const dataSchema = new mongoose.Schema({
   name: String,
   score: Number,
@@ -27,20 +17,40 @@ const dataSchema = new mongoose.Schema({
 
 const Data = mongoose.model("Data", dataSchema);
 
+app.get("/", (req, res) => res.send("Express on Vercel"));
+
+
 app.get("/getres", async (req, res) => {
+  
+  console.log("insideeeee getres");
+  if (!mongoose.connection.readyState) {
+    console.log("Database connection error");
+    return res.status(500).json({ error: "Database connection not established" });
+  }
+  
+  try {
     const allData = await Data.find({}).lean();
     console.log("All data:", allData);
-    const data = { data: allData }
-    res.json(data);
+    res.json({ data: allData });
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    res.status(500).json({ error: "Error fetching data" });
+  }
 });
 
 app.post("/postdata", async (req, res) => {
-    const newData = req.body;
+  const newData = req.body;
+
+  try {
     const createdData = await Data.create(newData);
     res.json({ createdData });
+  } catch (error) {
+    console.error("Error adding data:", error);
+    res.status(500).json({ error: "Error adding data" });
+  }
 });
 
-const PORT = process.env.PORT || 3030;
+const PORT = 8080;
 app.listen(PORT, () => {
   console.log(`Backend server is running on port ${PORT}`);
 });
